@@ -1,4 +1,4 @@
-# **Homework for the course "High-performance computer technologies**
+# **Homework for the course "High-performance computer technologies"**
 
 > Repo: https://github.com/hallomann/hct-homeworks.git
 >
@@ -16,7 +16,7 @@ The teacher is Nikita Sergeevich Markov, UrFU.
 
 ### **Homeworks**
 
-- Task 1: **G-zip classification**
+- Task 1: **[G-zip classification](https://github.com/hallomann/hct-homeworks/tree/main/hw1)**
 - Task 2: **Kharche's Model**
 - Task 3: **NE**
 - Task 4: **NE**
