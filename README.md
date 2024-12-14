@@ -17,6 +17,5 @@ The teacher is Nikita Sergeevich Markov, UrFU.
 ### **Homeworks**
 
 - Task 1: **[G-zip classification](https://github.com/hallomann/hct-homeworks/tree/main/hw1)**
-- Task 2: **Kharche's Model**
-- Task 3: **NE**
-- Task 4: **NE**
+- Task 2: **[Kharche's Model](https://github.com/hallomann/hct-homeworks/tree/main/hw2)**
+- Task 3: **[Implicit diffusion](https://github.com/hallomann/hct-homeworks/tree/main/hw3)**
