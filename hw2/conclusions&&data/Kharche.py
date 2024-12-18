@@ -9,8 +9,8 @@ F = 96.4845
 number_of_apds = 100
 
 # Параметры модели ###############
-ddt = 0.015  ## НА ВХОД В ФУНКЦИЮ
-total_time = 5000.0  ## НА ВХОД В ФУНКЦИЮ
+ddt = 0.015  # НА ВХОД В ФУНКЦИЮ
+total_time = 5000.0  # НА ВХОД В ФУНКЦИЮ
 capacitance = 0.025
 vcell = 3.0
 l_cell = 66.3767257
@@ -231,7 +231,8 @@ for sstime in frange(0.0, total_time, ddt):
     betaqa = 1.0 / (16.0 * exp((v) / 8.0) + 15.0 * exp((v) / 50.0))
     tauqa = 1.0 / (alphaqa + betaqa)
     alphaqi = (
-        0.15 * 1.0 / (3100.0 * exp((v + 10.0) / 13.0) + 700.3 * exp((v + 10.0) / 70.0))
+        0.15 * 1.0 / (3100.0 * exp((v + 10.0) / 13.0) +
+                      700.3 * exp((v + 10.0) / 70.0))
     )
     betaqi = 0.15 * 1.0 / (
         95.7 * exp(-(v + 10.0) / 10.0) + 50.0 * exp(-(v + 10.0) / 700.0)
@@ -256,10 +257,12 @@ for sstime in frange(0.0, total_time, ddt):
 
     # ** ICaTCav3.1 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** /
 
-    tau_dt = 1.0 / (1.068 * exp((v + 26.3) / 30.0) + 1.068 * exp(-(v + 26.3) / 30.0))
+    tau_dt = 1.0 / (1.068 * exp((v + 26.3) / 30.0) +
+                    1.068 * exp(-(v + 26.3) / 30.0))
     dt_inf = 1.0 / (1.0 + exp(-(v + 26.0) / 6.0))
     dt = dt + ddt * ((dt_inf - dt) / tau_dt)
-    tau_ft = 1.0 / (0.0153 * exp(-(v + 61.7) / 83.3) + 0.015 * exp((v + 61.7) / 15.38))
+    tau_ft = 1.0 / (0.0153 * exp(-(v + 61.7) / 83.3) +
+                    0.015 * exp((v + 61.7) / 15.38))
     ft_inf = 1.0 / (1.0 + exp((v + 61.7) / 5.6))
     ft = ft + ddt * ((ft_inf - ft) / tau_ft)
     icat = gcat * ft * dt * (v - ecat)
@@ -272,7 +275,8 @@ for sstime in frange(0.0, total_time, ddt):
     )
     ikr_act = ikr_act + ddt * (ikr_act_inf - ikr_act) / tau_ikr_act
     ikr_inact_inf = 1.0 / (1.0 + exp((v + 20.758474 - 4.0) / (19.0)))
-    tau_ikr_inact = 0.2 + 0.9 * 1.0 / (0.1 * exp(v / 54.645) + 0.656 * exp(v / 106.157))
+    tau_ikr_inact = 0.2 + 0.9 * 1.0 / \
+        (0.1 * exp(v / 54.645) + 0.656 * exp(v / 106.157))
     ikr_inact = ikr_inact + ddt * (ikr_inact_inf - ikr_inact) / tau_ikr_inact
     ikr = gkr * ikr_act * ikr_inact * (v - ek)
 
@@ -280,7 +284,8 @@ for sstime in frange(0.0, total_time, ddt):
 
     iks_act_inf = 1.0 / (1.0 + exp(-(v - 20.876040) / 11.852723))
     tau_iks_act = 1000.0 / (
-        13.097938 / (1.0 + exp(-(v - 48.910584) / 10.630272)) + exp(-(v) / 35.316539)
+        13.097938 / (1.0 + exp(-(v - 48.910584) / 10.630272)) +
+        exp(-(v) / 35.316539)
     )
     iks_act = iks_act + ddt * (iks_act_inf - iks_act) / tau_iks_act
     iks = gks * iks_act * iks_act * (v - eks)
@@ -288,7 +293,8 @@ for sstime in frange(0.0, total_time, ddt):
     # *ICaL ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** * /
 
     if abs(v) <= 0.001:
-        alpha_dl = -28.39 * (v + 35.0) / (exp(-(v + 35.0) / 2.5) - 1.0) + 408.173
+        alpha_dl = -28.39 * (v + 35.0) / \
+            (exp(-(v + 35.0) / 2.5) - 1.0) + 408.173
     elif abs(v + 35.0) <= 0.001:
         alpha_dl = 70.975 - 84.9 * v / (exp(-0.208 * v) - 1.0)
     elif abs(v) > 0.001 and fabs(v + 35.0) > 0.001:
@@ -320,7 +326,8 @@ for sstime in frange(0.0, total_time, ddt):
     # *INa ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** /
 
     fna = (
-        9.52e-02 * exp(-6.3e-2 * (v + 34.4)) / (1 + 1.66 * exp(-0.225 * (v + 63.7)))
+        9.52e-02 * exp(-6.3e-2 * (v + 34.4)) /
+        (1 + 1.66 * exp(-0.225 * (v + 63.7)))
     ) + 8.69e-2
     m3_inf_ttxr = 1.0 / (1.0 + exp(-(v + 45.213705) / 7.219547))
     h_inf_ttxr = 1.0 / (1.0 + exp(-(v + 62.578120) / (-6.084036)))
@@ -439,7 +446,8 @@ for sstime in frange(0.0, total_time, ddt):
     q_inf = 1.0 / (1.0 + exp((v + 49.0) / 13.0))
     tau_q = (
         6.06
-        + 39.102 / (0.57 * exp(-0.08 * (v + 44.0)) + 0.065 * exp(0.1 * (v + 45.93)))
+        + 39.102 / (0.57 * exp(-0.08 * (v + 44.0)) +
+                    0.065 * exp(0.1 * (v + 45.93)))
     ) / 0.67
     q = q + ddt * ((q_inf - q) / tau_q)
     r_inf = 1.0 / (1.0 + exp(-(v - 19.3) / 15.0))
@@ -475,12 +483,14 @@ for sstime in frange(0.0, total_time, ddt):
     )
     k43 = nai / (K3ni + nai)
     k12 = (casub / Kci) * exp(-Qci * v * FRT) / di
-    k14 = (nai / K1ni) * (nai / K2ni) * (1 + nai / K3ni) * exp(Qn * v * FRT / 2.0) / di
+    k14 = (nai / K1ni) * (nai / K2ni) * \
+        (1 + nai / K3ni) * exp(Qn * v * FRT / 2.0) / di
     k41 = exp(-Qn * v * FRT / 2.0)
     k34 = nao / (K3no + nao)
     k21 = (cao / Kco) * exp(Qco * v * FRT) / doo
     k23 = (
-        (nao / K1no) * (nao / K2no) * (1 + nao / K3no) * exp(-Qn * v * FRT / 2.0) / doo
+        (nao / K1no) * (nao / K2no) * (1 + nao / K3no) *
+        exp(-Qn * v * FRT / 2.0) / doo
     )
     k32 = exp(Qn * v * FRT / 2)
     x1 = k34 * k41 * (k23 + k21) + k21 * k32 * (k43 + k41)
@@ -536,7 +546,8 @@ for sstime in frange(0.0, total_time, ddt):
     Fcms = Fcms + ddt * dFcms
     Fcmi = Fcmi + ddt * dFcmi
     Fcq = Fcq + ddt * dFcq
-    casub = casub + ddt * ((-ca_flux + Jrel * vrel) / vsub - Jcadif - ConcCM * dFcms)
+    casub = casub + ddt * ((-ca_flux + Jrel * vrel) /
+                           vsub - Jcadif - ConcCM * dFcms)
     cai = cai + ddt * (
         (Jcadif * vsub - Jup * vup) / vi
         - (ConcCM * dFcmi + ConcTC * dFtc + ConcTMC * dFtmc)

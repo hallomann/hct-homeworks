@@ -30,12 +30,14 @@ u = np.zeros((N, N))
 v = np.zeros((N, N))
 
 # Задание начальных условий для u(x, y, 0)
-u[int(0 * N) : int(0.5 * N), int(0 * N) : int(0.5 * N)] = 1.0
+u[int(0 * N): int(0.5 * N), int(0 * N): int(0.5 * N)] = 1.0
 
 # Задание начальных условий для v(x, y, 0)
-v[int(0 * N) : int(0.5 * N), int(0 * N) : int(1.0 * N)] = 0.1
+v[int(0 * N): int(0.5 * N), int(0 * N): int(1.0 * N)] = 0.1
 
 # Функция для построения оператора Лапласа с нулевыми граничными условиями Дирихле
+
+
 def laplacian_operator(N, h):
     main_diag = -4.0 * np.ones(N * N)
     side_diag = np.ones(N * N)
@@ -59,6 +61,7 @@ def laplacian_operator(N, h):
     laplace /= h**2
     return laplace
 
+
 # Построение матрицы оператора Лапласа
 Laplace = laplacian_operator(N, h)
 
@@ -67,11 +70,15 @@ I_i = sp.eye(N * N, format="csr")
 A = I_i - tau * D * Laplace
 
 # Функция для преобразования матрицы 2D в 1D и обратно
+
+
 def to_1d(u):
     return u.ravel()
 
+
 def to_2d(u_flat):
     return u_flat.reshape((N, N))
+
 
 # Массивы для хранения результатов
 u_list_spsolve = []
@@ -99,7 +106,8 @@ for step in range(num_steps):
     v_spsolve += tau * epsilon * (beta * u_spsolve - gamma * v_spsolve - sigma)
 
     # Формирование правой части для u
-    f_u = u_spsolve + tau * (u_spsolve * (1 - u_spsolve) * (u_spsolve - a) - v_spsolve)
+    f_u = u_spsolve + tau * (u_spsolve * (1 - u_spsolve)
+                             * (u_spsolve - a) - v_spsolve)
 
     # Применение граничных условий (u = 0 на границах)
     f_u[0, :] = 0
@@ -143,8 +151,12 @@ v_cg = v.copy()
 
 # Предварительное вычисление факторизации для предобуславливания
 M2 = spla.spilu(A)
+
+
 def M_x(x):
     return M2.solve(x)
+
+
 M = spla.LinearOperator((N * N, N * N), M_x)
 
 print("\nНачало расчета с использованием метода сопряженных градиентов...")
@@ -206,6 +218,7 @@ print(f"\nУскорение в: {acceleration:.2f} раз(-а)")
 
 # Визуализация результатов
 
+
 def animate_solution(u_list, title):
     fig = plt.figure(figsize=(6, 6))
     ims = []
@@ -220,8 +233,10 @@ def animate_solution(u_list, title):
     plt.show()
     return ani
 
+
 # Анимация для решения с использованием spsolve
-ani_spsolve = animate_solution(u_list_spsolve, "Решение с использованием spsolve")
+ani_spsolve = animate_solution(
+    u_list_spsolve, "Решение с использованием spsolve")
 ani_spsolve.save('spsolve_animation.mp4', writer='ffmpeg')
 
 # Анимация для решения с использованием CG
@@ -230,8 +245,10 @@ ani_cg.save('cg_animation.mp4', writer='ffmpeg')
 
 # График зависимости времени выполнения от числа временных шагов
 plt.figure(figsize=(10, 6))
-plt.plot(range(1, num_steps + 1), [time_spsolve / num_steps] * num_steps, label='spsolve')
-plt.plot(range(1, num_steps + 1), [time_cg / num_steps] * num_steps, label='CG')
+plt.plot(range(1, num_steps + 1),
+         [time_spsolve / num_steps] * num_steps, label='spsolve')
+plt.plot(range(1, num_steps + 1),
+         [time_cg / num_steps] * num_steps, label='CG')
 plt.xlabel('Число временных шагов')
 plt.ylabel('Время выполнения (секунд)')
 plt.title('Зависимость времени выполнения от числа временных шагов')

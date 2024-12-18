@@ -59,7 +59,8 @@ def optimized_serial_knn(X_train, Y_train, X_test, C_train, k=101):
         Cx1 = compute_compressed_length(x1)
         # Compute C(x1 + x2) for all x2 in X_train
         # This can be parallelized or optimized further if possible
-        Cx1x2 = np.array([compute_compressed_length(x1 + x2) for x2 in X_train_np])
+        Cx1x2 = np.array([compute_compressed_length(x1 + x2)
+                         for x2 in X_train_np])
         # Compute NCD
         ncd = (Cx1x2 - np.minimum(Cx1, C_train)) / np.maximum(Cx1, C_train)
         # Get top k indices
@@ -79,7 +80,8 @@ def optimized_parallel_knn(
 
     def predict(x1):
         Cx1 = compute_compressed_length(x1)
-        Cx1x2 = np.array([compute_compressed_length(x1 + x2) for x2 in X_train])
+        Cx1x2 = np.array([compute_compressed_length(x1 + x2)
+                         for x2 in X_train])
         ncd = (Cx1x2 - np.minimum(Cx1, C_train)) / np.maximum(Cx1, C_train)
         sorted_idx = np.argsort(ncd)[:k]
         top_k_class = Y_train_np[sorted_idx]
@@ -114,22 +116,26 @@ def main():
     print("Running optimized serial k-NN implementation...")
     start_time = time.time()
 
-    optimized_serial_preds = optimized_serial_knn(X_train, Y_train, X_test, C_train, k)
+    optimized_serial_preds = optimized_serial_knn(
+        X_train, Y_train, X_test, C_train, k)
     optimized_serial_time = time.time() - start_time
-    print(f"Optimized serial implementation took {optimized_serial_time:.2f} seconds.")
+    print(f"Optimized serial implementation took {
+          optimized_serial_time:.2f} seconds.")
     speedup_serial = original_time / optimized_serial_time
     print(f"Speedup (Serial): {speedup_serial:.2f}x\n")
 
     # Optimized parallel implementation
     num_cores = multiprocessing.cpu_count()
-    print(f"Running optimized parallel k-NN implementation with {num_cores} cores...")
+    print(
+        f"Running optimized parallel k-NN implementation with {num_cores} cores...")
     start_time = time.time()
     optimized_parallel_preds = optimized_parallel_knn(
         X_train, Y_train, X_test, C_train, k, n_jobs=-1
     )
     optimized_parallel_time = time.time() - start_time
     print(
-        f"Optimized parallel implementation took {optimized_parallel_time:.2f} seconds."
+        f"Optimized parallel implementation took {
+            optimized_parallel_time:.2f} seconds."
     )
     speedup_parallel = original_time / optimized_parallel_time
     print(f"Speedup (Parallel): {speedup_parallel:.2f}x\n")
@@ -137,8 +143,10 @@ def main():
     # Validate predictions (optional)
     from sklearn.metrics import accuracy_score
     print("Original Accuracy:", accuracy_score(Y_test, original_preds))
-    print("Optimized Serial Accuracy:", accuracy_score(Y_test, optimized_serial_preds))
-    print("Optimized Parallel Accuracy:", accuracy_score(Y_test, optimized_parallel_preds))
+    print("Optimized Serial Accuracy:", accuracy_score(
+        Y_test, optimized_serial_preds))
+    print("Optimized Parallel Accuracy:", accuracy_score(
+        Y_test, optimized_parallel_preds))
 
     # Plotting the performance
     methods = ["Original", "Optimized Serial", "Optimized Parallel"]
